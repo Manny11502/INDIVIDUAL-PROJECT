@@ -1,0 +1,63 @@
+INDIVIDUAL PROJECT
+SQL scripts
+
+-- Drop for rerun
+DROP TABLE IF EXISTS Attendance, Enrollment, Child, ParentGuardian, Staff, Classroom;
+
+-- Parent/Guardian Table
+CREATE TABLE ParentGuardian (
+    ParentGuardianID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Contact VARCHAR(20),
+    Address VARCHAR(100),
+    Relation VARCHAR(30)
+);
+
+-- Child Table
+CREATE TABLE Child (
+    ChildID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    DOB DATE,
+    Allergies VARCHAR(100),
+    ParentGuardianID INT,
+    FOREIGN KEY (ParentGuardianID) REFERENCES ParentGuardian(ParentGuardianID)
+);
+
+-- Classroom Table
+CREATE TABLE Classroom (
+    ClassroomID INT PRIMARY KEY,
+    RoomID INT,
+    AgeGroup VARCHAR(10)
+);
+
+-- Staff Table
+CREATE TABLE Staff (
+    StaffID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Role VARCHAR(50),
+    Schedule VARCHAR(20),
+    ClassroomID INT,
+    FOREIGN KEY (ClassroomID) REFERENCES Classroom(ClassroomID)
+);
+
+-- Enrollment Table
+CREATE TABLE Enrollment (
+    ChildID INT,
+    ClassroomID INT,
+    EnrollmentDate DATE,
+    PRIMARY KEY (ChildID, ClassroomID),
+    FOREIGN KEY (ChildID) REFERENCES Child(ChildID),
+    FOREIGN KEY (ClassroomID) REFERENCES Classroom(ClassroomID)
+);
+
+-- Attendance Table
+CREATE TABLE Attendance (
+    AttendanceDate DATE,
+    ChildID INT,
+    Status VARCHAR(10),
+    PRIMARY KEY (AttendanceDate, ChildID),
+    FOREIGN KEY (ChildID) REFERENCES Child(ChildID)
+);
